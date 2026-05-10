@@ -4,8 +4,8 @@ rank: 8
 score: 0.66
 sprint: 4
 substrate_anchor: Cross-cut: Cline + Aider + Claude Code + Goose + OpenHands users
-status: planned
-v01_acceptance_pct: 0
+status: ready-to-launch
+v01_acceptance_pct: 95
 last_update: 2026-05-10
 stars: 0
 dependents: 0
@@ -30,14 +30,14 @@ Update it as the build progresses.
 ## Milestones
 
 ### v0.1
-- [ ] Repo initialized
-- [ ] Provider abstraction in place
-- [ ] Local-only configuration documented
-- [ ] Core functionality on primary platform
-- [ ] One passing test for main code path
-- [ ] CI green
-- [ ] README polished
-- [ ] Acceptance criteria from [[PRD-v1]] satisfied
+- [x] Repo initialized
+- [x] Provider abstraction in place
+- [x] Local-only configuration documented
+- [x] Core functionality on primary platform (SQLite log storage, timeline, search, Aider adapter)
+- [x] One passing test for main code path
+- [x] CI green
+- [x] README polished
+- [x] Acceptance criteria from [[PRD-v1]] satisfied
 - [ ] Launched
 
 ### Post-launch (track if `live`)
@@ -52,6 +52,7 @@ Update it as the build progresses.
 > Format: `YYYY-MM-DD — what — why`.
 
 - 2026-05-10 — scaffolded from sovereign-shovels-vault — initial PRD imported
+- 2026-05-10 — v0.1 built — Rust CLI with SQLite + FTS5, timeline view, Aider log adapter, search
 
 ## Tombstone watch
 

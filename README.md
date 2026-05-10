@@ -2,75 +2,112 @@
 
 > Unified log timeline for your agent sessions. Replay, search, compare across Cline, Aider, Claude Code, Goose.
 
-**Status:** v0.1 — in development.
+**Status:** v0.1 — ready to use.
 
-**Sovereignty:** sovereign-by-construction. BYO endpoint, BYO key, BYO model.
-A local-only configuration is documented and tested.
-
-This is a community project, **not affiliated with Cross-cut**.
-Best-effort community shovel — no SLA, no roadmap commitments.
+**Sovereignty:** sovereign-by-construction. Local SQLite. No cloud, no login, no telemetry.
 
 ---
 
 ## What this is
 
-Unified log timeline for your agent sessions. Replay, search, compare across Cline, Aider, Claude Code, Goose.
+If you run multiple agentic coding tools — Claude Code on one project, Aider on another, Cline on a third — you have no unified view of what each agent did, when, and why. Each tool stores logs differently.
+
+agent-console reads them all and gives you one timeline you can replay, search, and diff.
 
 ## What this isn't
 
+- Not a tool launcher
+- Not a project manager
+- Not a billing dashboard
+- Just observability
+
 See [PRD-v1.md](./PRD-v1.md) for the full anti-scope definition.
+
+---
 
 ## Install
 
-### From package manager (when v0.1 ships)
+### From source
 
-```bash
-npm install && npm run tauri build
-```
-
-### Build from source
+**Prerequisites:**
+- [Rust](https://rustup.rs/) 1.75+
 
 ```bash
 git clone https://github.com/sovereign-shovels/agent-console.git
 cd agent-console
-```
-# Install dependencies
-npm install
 
-# Build desktop app
-npm run tauri build
+# Build
+cargo build --release
 
-# Or run in dev mode
-npm run tauri dev
+# The binary is at target/release/agent-console
 ```
 
-## Configure
+---
 
-You bring the model. By default `agent-console` tries to use a local provider:
+## Usage
 
-- For LLM endpoints: Ollama at `http://localhost:11434`
-- For voice endpoints: configurable, see docs
+### Import logs
 
-To use any other provider (Claude, GPT, Hermes, OpenRouter, Sarvam, etc.):
+```bash
+# Import Aider log
+agent-console import --tool aider ~/.aider/input-history
 
-```toml
-# ~/.config/agent-console/config.toml
-[provider]
-endpoint = "https://api.your-provider.com/v1"
-api_key_env = "YOUR_PROVIDER_KEY"
-model = "your-model-name"
+# Import generic JSON lines
+agent-console import --tool generic ./my-logs.jsonl
 ```
 
-Anthropic, OpenAI, and Sarvam endpoints all work. Local Ollama, llama.cpp,
-LM Studio, and vLLM all work via their OpenAI-compatible endpoints.
+Generic JSON lines format:
+```json
+{"timestamp":"2024-01-01T00:00:00Z","tool":"custom","session_id":"sess-1","action":"write","content":"file contents"}
+```
+
+### View timeline
+
+```bash
+agent-console timeline
+agent-console timeline --tool aider --limit 20
+```
+
+### Search across all sessions
+
+```bash
+agent-console search "auth middleware"
+```
+
+### List sessions
+
+```bash
+agent-console sessions
+```
+
+---
+
+## Supported tools
+
+| Tool | Status |
+|---|---|
+| Aider | ✅ Basic log import |
+| Generic JSON | ✅ Full support |
+| Cline | 🚧 Planned v0.5 |
+| Claude Code | 🚧 Planned v0.5 |
+| Goose | 🚧 Planned v0.5 |
+
+---
 
 ## Why this exists
 
-See [PRD-v1.md](./PRD-v1.md) for the problem statement and rationale.
+Cross-tool unification is a structural moat — no single tool will solve it. Real demand from the polyglot agent crowd.
+
+See [PRD-v1.md](./PRD-v1.md) for the full problem statement and rationale.
 
 ## What's next
 
-See [PRD-v1.md](./PRD-v1.md) for the full v0.1 → v0.5 → v1.0 plan.
+- **v0.5:** Diff between sessions, annotation, export to shareable HTML, Cline/Claude Code/Goose adapters
+- **v1.0:** Live tail mode, multi-machine aggregation, cost/token analytics
+
+See [PRD-v1.md](./PRD-v1.md) for the full roadmap.
+
+---
 
 ## License
 
@@ -78,9 +115,6 @@ Apache 2.0. See [LICENSE](./LICENSE).
 
 ## Part of sovereign-shovels
 
-This repo is part of the [sovereign-shovels](https://github.com/sovereign-shovels)
-portfolio of small, focused, sovereign-by-construction AI utilities.
+This repo is part of the [sovereign-shovels](https://github.com/sovereign-shovels) portfolio of small, focused, sovereign-by-construction AI utilities.
 
-Other shovels: claude-vault, bulbul-studio, saaras-tray, claude-prompts,
-ollama-cron, mcp-forge, sarvam-pdf, agent-console, sarvam-meet, obsidian-llm,
-llm-diff, claude-bridge, claude-radio, sarvam-cast.
+Other shovels: claude-vault, bulbul-studio, saaras-tray, claude-prompts, ollama-cron, mcp-forge, sarvam-pdf, agent-console, sarvam-meet, obsidian-llm, llm-diff, claude-bridge, claude-radio, sarvam-cast.
