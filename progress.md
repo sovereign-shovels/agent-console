@@ -61,3 +61,4 @@ What we're monitoring (from PRD-v1):
 All major agent tools standardizing on the same log format independently. Then this becomes a thin viewer.
 
 Status: not triggered.
+- 2026-05-10 — hardened against local Ollama — all CLI paths verified, compile+tests green

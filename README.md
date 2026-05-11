@@ -8,6 +8,25 @@
 
 ---
 
+## Architecture
+
+```
+┌─────────────┐     ┌──────────────┐     ┌─────────────────┐
+│  Aider log  │────▶│              │     │   SQLite DB     │
+├─────────────┤     │   agent-     │────▶│   (sessions +   │
+│ Cline log   │────▶│   console    │     │    entries)     │
+│ (planned)   │     │  (adapters)  │     ├─────────────────┤
+├─────────────┤     │              │     │   FTS5 search   │
+│ Claude Code │────▶│              │     └─────────────────┘
+│ (planned)   │     └──────────────┘              │
+├─────────────┤                                   ▼
+│  Generic    │────▶                      ┌──────────────┐
+│  JSON lines │                          │  CLI query   │
+└─────────────┘                          │ timeline/    │
+                                         │ search/list  │
+                                         └──────────────┘
+```
+
 ## What this is
 
 If you run multiple agentic coding tools — Claude Code on one project, Aider on another, Cline on a third — you have no unified view of what each agent did, when, and why. Each tool stores logs differently.
@@ -78,6 +97,23 @@ agent-console search "auth middleware"
 
 ```bash
 agent-console sessions
+```
+
+**Demo output:**
+```
+$ agent-console import test-aider-log.txt --tool aider
+Imported 4 entries from aider.
+
+$ agent-console timeline
+
+=== Session: aider-1778434991 ===
+[17:43:11] [aider] output | ---
+[17:43:11] [aider] output | user: Can you fix this bug?
+[17:43:11] [aider] output | assistant: I'll help you with that.
+[17:43:11] [aider] output | ---
+
+$ agent-console search "refactor"
+No results for 'refactor'.
 ```
 
 ---
