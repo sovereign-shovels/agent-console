@@ -132,7 +132,7 @@ mod tests {
     use std::path::PathBuf;
 
     fn test_db() -> LogDb {
-        let tmp = PathBuf::from("/tmp/agent-console-test.db");
+        let tmp = std::env::temp_dir().join(format!("agent-console-test-{}.db", std::process::id()));
         let _ = std::fs::remove_file(&tmp);
         LogDb::open(&tmp).unwrap()
     }
